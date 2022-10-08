@@ -1,16 +1,16 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const connectedDeviceSchema = new mongoose.Schema({
     userId: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: "users",
+        ref: 'users',
     },
     qrCodeId: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: "qrCodes",
+        ref: 'qrCodes',
     },
     deviceName: { type: String, default: null },
     deviceModel: { type: String, default: null },
@@ -19,4 +19,4 @@ const connectedDeviceSchema = new mongoose.Schema({
     disabled: { type: Boolean, default: false },
 });
 
-module.exports = mongoose.model("connectedDevice", connectedDeviceSchema);
+module.exports = mongoose.model('connectedDevice', connectedDeviceSchema);

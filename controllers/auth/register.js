@@ -1,21 +1,27 @@
-const User = require("../../model/user");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const User = require('../../model/user');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const adminKey = process.env.ADMIN_KEY;
-const register = async (req, res) => {
+const register = async (req, res, next) => {
     // not allow to register for everyone to register
     let key = req.body.key;
     if (key !== adminKey || !key) {
-        return res.status(400).send("Invalid key");
+        return res.status(400).send('Invalid key');
     }
+
+    // error message
+    let error = new Error();
+    error.status = 400;
+
     try {
         // Get user input
         const { first_name, last_name, email, password } = req.body;
 
         // Validate user input
         if (!(email && password && first_name && last_name)) {
-            res.status(400).send("All input is required");
+            error.message = 'All input is required';
+            return next(error);
         }
 
         // check if user already exist
@@ -23,11 +29,13 @@ const register = async (req, res) => {
         const oldUser = await User.findOne({ email });
 
         if (oldUser) {
-            return res.status(409).send("User Already Exist. Please Login");
+            error.status = 409;
+            error.message = 'User Already Exist. Please Login';
+            return next(error);
         }
 
         // Encrypt user password
-        encryptedPassword = await bcrypt.hash(password, 10);
+        let encryptedPassword = await bcrypt.hash(password, 10);
 
         // Create user in our database
         const user = await User.create({
@@ -42,14 +50,14 @@ const register = async (req, res) => {
             { user_id: user._id, email },
             process.env.TOKEN_KEY,
             {
-                expiresIn: "2h",
+                expiresIn: '2h',
             }
         );
 
         // return new user
         res.status(201).json({ token });
     } catch (err) {
-        console.log(err);
+        return next(err);
     }
 };
 

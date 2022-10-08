@@ -1,20 +1,25 @@
-const ConnectedDevice = require("../../model/connectedDevice");
-const QRCode = require("../../model/qrCode");
-const jwt = require("jsonwebtoken");
-const User = require("../../model/user");
+const ConnectedDevice = require('../../model/connectedDevice');
+const QRCode = require('../../model/qrCode');
+const jwt = require('jsonwebtoken');
+const User = require('../../model/user');
 
-const verify = async (req, res) => {
+const verify = async (req, res, next) => {
     try {
         const { token, deviceInformation } = req.body;
 
+        // error message
+        let error = new Error();
+        error.status = 400;
+
         if (!token && !deviceInformation) {
-            res.status(400).send("Token and deviceInformation is required");
+            error.message = 'Token and device information is required';
+            return next(error);
         }
 
         try {
             var decoded = jwt.verify(token, process.env.TOKEN_KEY);
         } catch (err) {
-            return res.status(400).send(err);
+            return next(err);
         }
 
         const qrCode = await QRCode.findOne({
@@ -23,7 +28,8 @@ const verify = async (req, res) => {
         });
 
         if (!qrCode) {
-            res.status(400).send("QR Code not found");
+            error.message = 'QR code does not exist';
+            return next(error);
         }
 
         const connectedDeviceData = {
@@ -57,14 +63,14 @@ const verify = async (req, res) => {
             { user_id: user._id },
             process.env.TOKEN_KEY,
             {
-                expiresIn: "2h",
+                expiresIn: '2h',
             }
         );
 
         // Return token
         return res.status(200).json({ token: authToken });
     } catch (err) {
-        console.log(err);
+        return next(err);
     }
 };
 

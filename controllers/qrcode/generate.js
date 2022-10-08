@@ -1,21 +1,48 @@
-const User = require("../../model/user");
-const QR = require("qrcode");
-const QRCode = require("../../model/qrCode");
-const jwt = require("jsonwebtoken");
-const generate = async (req, res) => {
+const User = require('../../model/user');
+const QR = require('qrcode');
+const QRCode = require('../../model/qrCode');
+const jwt = require('jsonwebtoken');
+const generate = async (req, res, next) => {
+    //check if user is logged in use jwt
+    if (!req.headers.authorization) {
+        let error = new Error('You are not authorized to access this resource');
+        error.status = 401;
+        return next(error);
+    }
+
+    // decode the jwt and see if it valid
+    if (req.headers.authorization) {
+        const token = req.headers.authorization.split(' ')[1];
+        try {
+            var decoded = jwt.verify(token, process.env.TOKEN_KEY);
+            console.log(decoded);
+        } catch (err) {
+            // error status is 403
+            err.status = 400;
+            return next(err);
+        }
+    }
+
     try {
         const { userId } = req.body;
 
+        // error message
+        let error = new Error();
+        error.status = 400;
+
         // Validate user input
         if (!userId) {
-            res.status(400).send("User Id is required");
+            error.message = 'All input is required';
+            return next(error);
         }
 
         const user = await User.findById(userId);
 
         // Validate is user exist
         if (!user) {
-            res.status(400).send("User not found");
+            error.message = 'User does not exist';
+            error.status = 404;
+            return next(error);
         }
 
         const qrExist = await QRCode.findOne({ userId });
@@ -24,12 +51,6 @@ const generate = async (req, res) => {
         if (!qrExist) {
             await QRCode.create({ userId });
         } else {
-            // await QRCode.findOneAndUpdate(
-            //     { userId },
-            //     { $set: { disabled: true } }
-            // );
-            // await QRCode.create({ userId });
-
             // find all and update
             await QRCode.updateMany({ userId }, { $set: { disabled: true } });
 
@@ -41,7 +62,7 @@ const generate = async (req, res) => {
             { userId: user._id },
             process.env.TOKEN_KEY,
             {
-                expiresIn: "1d",
+                expiresIn: '1d',
             }
         );
 
@@ -51,7 +72,7 @@ const generate = async (req, res) => {
         // Return qr code
         return res.status(200).json({ dataImage });
     } catch (err) {
-        console.log(err);
+        return next(err);
     }
 };
 

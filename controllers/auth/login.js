@@ -1,16 +1,21 @@
-const User = require("../../model/user");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const User = require('../../model/user');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
     // Our login logic starts here
     try {
         // Get user input
         const { email, password } = req.query;
 
+        // error message
+        let error = new Error();
+        error.status = 400;
+
         // Validate user input
         if (!(email && password)) {
-            res.status(400).send("All input is required");
+            error.message = 'All input is required';
+            return next(error);
         }
 
         // Validate if user exist in our database
@@ -22,16 +27,17 @@ const login = async (req, res) => {
                 { user_id: user._id, email },
                 process.env.TOKEN_KEY,
                 {
-                    expiresIn: "2h",
+                    expiresIn: '2h',
                 }
             );
 
             // user
             return res.status(200).json({ token });
         }
-        return res.status(400).send("Invalid Credentials");
+        error.message = 'Invalid credentials';
+        return next(error);
     } catch (err) {
-        console.log(err);
+        return next(err);
     }
     // Our login logic ends here
 };
