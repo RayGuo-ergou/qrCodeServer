@@ -4,6 +4,25 @@ const jwt = require('jsonwebtoken');
 const User = require('../../model/user');
 
 const verify = async (req, res, next) => {
+    //check if user is logged in use jwt
+    if (!req.headers.authorization) {
+        let error = new Error('You are not authorized to access this resource');
+        error.status = 401;
+        return next(error);
+    }
+
+    // decode the jwt and see if it valid
+    if (req.headers.authorization) {
+        const token = req.headers.authorization.split(' ')[1];
+        try {
+            var decoded = jwt.verify(token, process.env.TOKEN_KEY);
+            console.log(decoded);
+        } catch (err) {
+            err.status = 400;
+            return next(err);
+        }
+    }
+
     try {
         const { token, deviceInformation } = req.body;
 
@@ -17,7 +36,7 @@ const verify = async (req, res, next) => {
         }
 
         try {
-            var decoded = jwt.verify(token, process.env.TOKEN_KEY);
+            jwt.verify(token, process.env.TOKEN_KEY);
         } catch (err) {
             return next(err);
         }

@@ -14,10 +14,8 @@ const generate = async (req, res, next) => {
     if (req.headers.authorization) {
         const token = req.headers.authorization.split(' ')[1];
         try {
-            var decoded = jwt.verify(token, process.env.TOKEN_KEY);
-            console.log(decoded);
+            jwt.verify(token, process.env.TOKEN_KEY);
         } catch (err) {
-            // error status is 403
             err.status = 400;
             return next(err);
         }
