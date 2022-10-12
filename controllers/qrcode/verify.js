@@ -2,6 +2,8 @@ const ConnectedDevice = require('../../model/connectedDevice');
 const QRCode = require('../../model/qrCode');
 const jwt = require('jsonwebtoken');
 const User = require('../../model/user');
+const utility = require('../../utility');
+const decrypt = utility.cipher.decrypt;
 
 const verify = async (req, res, next) => {
     //check if user is logged in use jwt
@@ -15,8 +17,7 @@ const verify = async (req, res, next) => {
     if (req.headers.authorization) {
         const token = req.headers.authorization.split(' ')[1];
         try {
-            var decoded = jwt.verify(token, process.env.TOKEN_KEY);
-            console.log(decoded);
+            jwt.verify(token, process.env.TOKEN_KEY);
         } catch (err) {
             err.status = 400;
             return next(err);
@@ -35,14 +36,20 @@ const verify = async (req, res, next) => {
             return next(error);
         }
 
+        const qrData = await QRCode.findOne({ token: token });
+
         try {
-            jwt.verify(token, process.env.TOKEN_KEY);
+            var decryptedData = decrypt(
+                { text: token, nonce: qrData.nonce },
+                process.env.CIPHER_KEY
+            );
+            console.log(decryptedData);
         } catch (err) {
             return next(err);
         }
 
         const qrCode = await QRCode.findOne({
-            userId: decoded.userId,
+            userId: decryptedData,
             disabled: false,
         });
 
@@ -52,7 +59,7 @@ const verify = async (req, res, next) => {
         }
 
         const connectedDeviceData = {
-            userId: decoded.userId,
+            userId: decryptedData,
             qrCodeId: qrCode._id,
             deviceName: deviceInformation.deviceName,
             deviceModel: deviceInformation.deviceModel,
@@ -75,19 +82,20 @@ const verify = async (req, res, next) => {
         );
 
         // Find user
-        const user = await User.findById(decoded.userId);
+        const user = await User.findById(decryptedData);
 
-        // Create token
-        const authToken = jwt.sign(
-            { user_id: user._id },
-            process.env.TOKEN_KEY,
-            {
-                expiresIn: '2h',
-            }
-        );
+        // // Create token
+        // const authToken = jwt.sign(
+        //     { user_id: user._id },
+        //     process.env.TOKEN_KEY,
+        //     {
+        //         expiresIn: '2h',
+        //     }
+        // );
 
-        // Return token
-        return res.status(200).json({ token: authToken });
+        // Return user for now
+        // TODO: change in the future
+        return res.status(200).json(user);
     } catch (err) {
         return next(err);
     }

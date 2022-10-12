@@ -2,6 +2,10 @@ const User = require('../../model/user');
 const QR = require('qrcode');
 const QRCode = require('../../model/qrCode');
 const jwt = require('jsonwebtoken');
+const utility = require('../../utility');
+const encrypt = utility.cipher.encrypt;
+const getRandom = utility.random;
+
 const generate = async (req, res, next) => {
     //check if user is logged in use jwt
     if (!req.headers.authorization) {
@@ -55,13 +59,17 @@ const generate = async (req, res, next) => {
             await QRCode.create({ userId });
         }
 
+        let nonce = getRandom(6);
         // Generate encrypted data
-        const encryptedData = jwt.sign(
-            { userId: user._id },
-            process.env.TOKEN_KEY,
-            {
-                expiresIn: '1d',
-            }
+        const encryptedData = encrypt(
+            { nonce: nonce, text: userId },
+            process.env.CIPHER_KEY
+        );
+
+        // add nonce to qrcode data in mongodb
+        await QRCode.updateOne(
+            { userId, disabled: false },
+            { $set: { nonce: nonce, token: encryptedData } }
         );
 
         // Generate qr code
