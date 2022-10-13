@@ -7,20 +7,32 @@ const register = async (req, res, next) => {
     // not allow to register for everyone to register
     let key = req.body.key;
     if (key !== adminKey || !key) {
-        return res.status(400).send('Invalid key');
+        let error = new Error('You are not authorized to access this resource');
+        error.status = 401;
+        return next(error);
     }
-
-    // error message
-    let error = new Error();
-    error.status = 400;
 
     try {
         // Get user input
         const { first_name, last_name, email, password } = req.body;
 
+        // if req.body.role exist role = req.body.role else role = 1
+        let role = typeof req.body.role !== 'undefined' ? req.body.role : 1;
+
         // Validate user input
         if (!(email && password && first_name && last_name)) {
-            error.message = 'All input is required';
+            let error = new Error('All input is required');
+            error.status = 400;
+            return next(error);
+        }
+
+        // check email format
+        //email regex
+        // eslint-disable-next-line no-useless-escape
+        const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        if (!emailRegex.test(email)) {
+            let error = new Error('Invalid email format');
+            error.status = 400;
             return next(error);
         }
 
@@ -29,8 +41,8 @@ const register = async (req, res, next) => {
         const oldUser = await User.findOne({ email });
 
         if (oldUser) {
+            let error = new Error('User Already Exist. Please Login');
             error.status = 409;
-            error.message = 'User Already Exist. Please Login';
             return next(error);
         }
 
@@ -43,6 +55,7 @@ const register = async (req, res, next) => {
             last_name,
             email: email.toLowerCase(), // sanitize: convert email to lowercase
             password: encryptedPassword,
+            role,
         });
 
         // Create token

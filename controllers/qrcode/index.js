@@ -2,4 +2,6 @@
 module.exports = {
     generate: require('./generate'),
     verify: require('./verify'),
+    getQRcodeById: require('./getQRcodeById'),
+    getQR: require('./getQR'),
 };

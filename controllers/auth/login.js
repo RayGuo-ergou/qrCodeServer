@@ -8,13 +8,10 @@ const login = async (req, res, next) => {
         // Get user input
         const { email, password } = req.query;
 
-        // error message
-        let error = new Error();
-        error.status = 400;
-
         // Validate user input
         if (!(email && password)) {
-            error.message = 'All input is required';
+            let error = new Error('All input is required');
+            error.status = 400;
             return next(error);
         }
 
@@ -34,7 +31,8 @@ const login = async (req, res, next) => {
             // user
             return res.status(200).json({ token });
         }
-        error.message = 'Invalid credentials';
+        let error = new Error('Invalid credentials');
+        error.status = 400;
         return next(error);
     } catch (err) {
         return next(err);

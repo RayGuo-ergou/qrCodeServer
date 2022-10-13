@@ -7,15 +7,35 @@ const qrCodeSchema = new mongoose.Schema({
         required: true,
         ref: 'users',
     },
-    connectedDeviceId: {
-        type: Schema.Types.ObjectId,
-        ref: 'connectedDevices',
-    },
+
+    // image: qrcode image in base64
+    image: { type: String, required: true },
+
+    number: { type: Number, default: 0 },
+
+    // 0 = free, 1 = cut-in, 2 = free&cut-in
+    type: { type: Number, default: 0 },
+
+    // when this qr code is used
     lastUsedDate: { type: Date, default: null },
-    isActive: { type: Boolean, default: false },
-    disabled: { type: Boolean, default: false },
+
+    // is this qr code active
+    isActive: { type: Boolean, default: true },
+
     nonce: { type: String, default: null },
     token: { type: String, default: null },
+
+    // when is this qr code created
+    createdDate: { type: Date, default: Date.now },
+});
+
+// pre check type in range 0 to 2
+qrCodeSchema.pre('save', function (next) {
+    if (this.type < 0 || this.type > 2) {
+        // set to 0
+        this.type = 0;
+    }
+    next();
 });
 
 module.exports = mongoose.model('qrCode', qrCodeSchema);

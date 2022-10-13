@@ -26,57 +26,71 @@ const generate = async (req, res, next) => {
     }
 
     try {
-        const { userId } = req.body;
-
-        // error message
-        let error = new Error();
-        error.status = 400;
+        const { email, type } = req.body;
 
         // Validate user input
-        if (!userId) {
-            error.message = 'All input is required';
+        if (!email || !type) {
+            let error = new Error('All input is required');
+            error.status = 400;
             return next(error);
         }
 
-        const user = await User.findById(userId);
+        // find user via email
+        const user = await User.findOne({ email: email });
 
         // Validate is user exist
         if (!user) {
-            error.message = 'User does not exist';
+            let error = new Error('User does not exist');
             error.status = 404;
             return next(error);
         }
 
-        const qrExist = await QRCode.findOne({ userId });
+        // init index to 1
+        let index = 1;
 
-        // If qr exist, update disable to true and then create a new qr record
-        if (!qrExist) {
-            await QRCode.create({ userId });
-        } else {
-            // find all and update
-            await QRCode.updateMany({ userId }, { $set: { disabled: true } });
+        // find the largest number of qrcode database
+        await QRCode.findOne({ userId: user._id })
+            .sort({
+                number: -1,
+            })
+            .exec(async (err, doc) => {
+                if (err) {
+                    return next(err);
+                }
+                if (doc) {
+                    index = doc.number + 1;
+                }
+                let nonce = getRandom(6);
+                // Generate encrypted data
+                const encryptedData = await encrypt(
+                    {
+                        nonce: nonce,
+                        text: JSON.stringify({
+                            userId: user._id,
+                            number: index,
+                        }),
+                    },
+                    process.env.CIPHER_KEY
+                );
 
-            await QRCode.create({ userId });
-        }
+                const dataImage = await QR.toDataURL(encryptedData);
 
-        let nonce = getRandom(6);
-        // Generate encrypted data
-        const encryptedData = encrypt(
-            { nonce: nonce, text: userId },
-            process.env.CIPHER_KEY
-        );
+                // create data to save to database
+                const qrData = {
+                    userId: user._id,
+                    number: index,
+                    type: type,
+                    nonce: nonce,
+                    token: encryptedData,
+                    image: dataImage,
+                };
 
-        // add nonce to qrcode data in mongodb
-        await QRCode.updateOne(
-            { userId, disabled: false },
-            { $set: { nonce: nonce, token: encryptedData } }
-        );
+                // save to database
+                await QRCode.create(qrData);
 
-        // Generate qr code
-        const dataImage = await QR.toDataURL(encryptedData);
-
-        // Return qr code
-        return res.status(200).json({ dataImage });
+                // Return qr code
+                return res.status(200).json({ dataImage });
+            });
     } catch (err) {
         return next(err);
     }

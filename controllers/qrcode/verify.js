@@ -1,4 +1,3 @@
-const ConnectedDevice = require('../../model/connectedDevice');
 const QRCode = require('../../model/qrCode');
 const jwt = require('jsonwebtoken');
 const User = require('../../model/user');
@@ -25,18 +24,21 @@ const verify = async (req, res, next) => {
     }
 
     try {
-        const { token, deviceInformation } = req.body;
+        const { token } = req.body;
 
-        // error message
-        let error = new Error();
-        error.status = 400;
-
-        if (!token && !deviceInformation) {
-            error.message = 'Token and device information is required';
+        if (!token) {
+            let error = new Error('Token is required');
+            error.status = 400;
             return next(error);
         }
 
         const qrData = await QRCode.findOne({ token: token });
+
+        if (!qrData) {
+            let error = new Error('Token is invalid');
+            error.status = 400;
+            return next(error);
+        }
 
         try {
             var decryptedData = decrypt(
@@ -48,54 +50,38 @@ const verify = async (req, res, next) => {
             return next(err);
         }
 
+        const decryptedJson = JSON.parse(decryptedData);
+
         const qrCode = await QRCode.findOne({
-            userId: decryptedData,
-            disabled: false,
+            userId: decryptedJson.userId,
+            number: decryptedJson.number,
         });
 
         if (!qrCode) {
-            error.message = 'QR code does not exist';
+            let error = new Error('QR Code does not exist');
+            error.status = 404;
             return next(error);
         }
 
-        const connectedDeviceData = {
-            userId: decryptedData,
-            qrCodeId: qrCode._id,
-            deviceName: deviceInformation.deviceName,
-            deviceModel: deviceInformation.deviceModel,
-            deviceOS: deviceInformation.deviceOS,
-            deviceVersion: deviceInformation.deviceVersion,
-        };
-
-        const connectedDevice = await ConnectedDevice.create(
-            connectedDeviceData
-        );
-
         // Update qr code
-        await QRCode.findOneAndUpdate(
-            { _id: qrCode._id },
-            {
-                isActive: true,
-                connectedDeviceId: connectedDevice._id,
-                lastUsedDate: new Date(),
-            }
-        );
-
-        // Find user
-        const user = await User.findById(decryptedData);
-
-        // // Create token
-        // const authToken = jwt.sign(
-        //     { user_id: user._id },
-        //     process.env.TOKEN_KEY,
+        // TODO: update qr code in another endpoint
+        // await QRCode.findOneAndUpdate(
+        //     { _id: qrCode._id },
         //     {
-        //         expiresIn: '2h',
+        //         isActive: true,
+        //         lastUsedDate: new Date(),
         //     }
         // );
 
-        // Return user for now
+        // Find user
+        const user = await User.findById(decryptedJson.userId);
+
         // TODO: change in the future
-        return res.status(200).json(user);
+        return res.status(200).json({
+            message: 'QR code verified',
+            user: user.first_name + ' ' + user.last_name,
+            number: qrCode.number,
+        });
     } catch (err) {
         return next(err);
     }
