@@ -14,6 +14,13 @@ const admin = new AdminJS({
             resource: User,
             options: {
                 id: 'users',
+                actions: {
+                    // only can show list of users
+                    // not allow to create, edit, delete
+                    new: { isAccessible: false },
+                    edit: { isAccessible: false },
+                    delete: { isAccessible: false },
+                },
             },
         },
         {

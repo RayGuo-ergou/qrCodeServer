@@ -5,8 +5,19 @@ const express = require('express');
 const error = require('./middlewares/error');
 const app = express();
 const { admin, router } = routers.admin;
+const helmet = require('helmet');
+const cors = require('cors');
 
 app.use(express.json());
+
+var corsOptions = {
+    origin: process.env.FRONTEND_URL,
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+// use helmet to secure the app by setting various HTTP headers
+app.use(helmet());
+app.use(cors(corsOptions));
 
 // user routers
 app.use('/api/user', routers.user);
