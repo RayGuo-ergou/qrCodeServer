@@ -6,4 +6,5 @@ module.exports = {
         encrypt: require('./cipher/encrypt'),
     },
     random: require('./random'),
+    adminAuth: require('./adminAuth'),
 };
