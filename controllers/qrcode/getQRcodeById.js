@@ -1,7 +1,25 @@
 const User = require('../../model/user');
 const QRCode = require('../../model/qrCode');
+const jwt = require('jsonwebtoken');
 
 const getQrcodeById = async (req, res, next) => {
+    //check if user is logged in use jwt
+    if (!req.headers.authorization) {
+        let error = new Error('You are not authorized to access this resource');
+        error.status = 401;
+        return next(error);
+    }
+
+    // decode the jwt and see if it valid
+    if (req.headers.authorization) {
+        const token = req.headers.authorization.split(' ')[1];
+        try {
+            jwt.verify(token, process.env.TOKEN_KEY);
+        } catch (err) {
+            err.status = 400;
+            return next(err);
+        }
+    }
     const number = req.params.id;
     const email = req.query.email;
 

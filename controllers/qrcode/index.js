@@ -4,4 +4,5 @@ module.exports = {
     verify: require('./verify'),
     getQRcodeById: require('./getQRcodeById'),
     getQR: require('./getQR'),
+    changeQR: require('./changeQR'),
 };
