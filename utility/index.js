@@ -6,5 +6,6 @@ module.exports = {
         encrypt: require('./cipher/encrypt'),
     },
     random: require('./random'),
-    adminAuth: require('./adminAuth'),
+    adminAuth: require('./adminPortal/auth'),
+    qrCustom: require('./adminPortal/qrCustom'),
 };

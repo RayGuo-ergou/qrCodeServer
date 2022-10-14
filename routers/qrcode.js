@@ -21,16 +21,18 @@ const {
  *   "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30"
  * }
  * @apiQuery {String} email Email of the user
- * @apiSuccess {Object[]} qrcodes List of QR codes
- * @apiSuccess {String} qrcodes._id ID of the QR code
- * @apiSuccess {String} qrcodes.userId ID of the user
- * @apiSuccess {String} qrcodes.number Number of the QR code
- * @apiSuccess {String} qrcodes.type Type of the QR code
- * @apiSuccess {String} qrcodes.lastUsedDate Last used date of the QR code
- * @apiSuccess {String} qrcodes.createdAt Creation date of the QR code
- * @apiSuccess {String} qrcodes.isActive Status of the QR code
- * @apiSuccess {String} qrcodes.nonce Nonce of the QR code(chacha20)
- * @apiSuccess {String} qrcodes.token Token of the QR code(chacha20)
+ * @apiSuccess {Object} result qrcode array and username
+ * @apiSuccess {Object[]} result.qrcodes List of QR codes
+ * @apiSuccess {String} result.qrcodes._id ID of the QR code
+ * @apiSuccess {String} result.qrcodes.userId ID of the user
+ * @apiSuccess {String} result.qrcodes.number Number of the QR code
+ * @apiSuccess {String} result.qrcodes.type Type of the QR code
+ * @apiSuccess {String} result.qrcodes.lastUsedDate Last used date of the QR code
+ * @apiSuccess {String} result.qrcodes.createdAt Creation date of the QR code
+ * @apiSuccess {String} result.qrcodes.isActive Status of the QR code
+ * @apiSuccess {String} result.qrcodes.nonce Nonce of the QR code(chacha20)
+ * @apiSuccess {String} result.qrcodes.token Token of the QR code(chacha20)
+ * @apiSuccess {String} result.username Username of the user
  * @apiError (401: Unauthorized) {String} Unauthorized Message You are not authorized to access this resource
  * @apiError (400: Bad Request) {String} MissingEmail Please input email
  * @apiErrorExample {json} Not Authorized:
@@ -126,16 +128,18 @@ router.post('/', generate);
  * }
  * @apiParam {String} id Number of the QR code
  * @apiQuery {String} email Email of the user
- * @apiSuccess {Object} qrcode Object of QR code
- * @apiSuccess {String} qrcode._id ID of the QR code
- * @apiSuccess {String} qrcode.userId ID of the user
- * @apiSuccess {String} qrcode.number Number of the QR code
- * @apiSuccess {String} qrcode.type Type of the QR code
- * @apiSuccess {String} qrcode.lastUsedDate Last used date of the QR code
- * @apiSuccess {String} qrcode.createdAt Creation date of the QR code
- * @apiSuccess {String} qrcode.isActive Status of the QR code
- * @apiSuccess {String} qrcode.nonce Nonce of the QR code(chacha20)
- * @apiSuccess {String} qrcode.token Token of the QR code(chacha20)
+ * @apiSuccess {Object} result result include the QR code and username
+ * @apiSuccess {Object} result.qrcode Object of QR code
+ * @apiSuccess {String} result.qrcode._id ID of the QR code
+ * @apiSuccess {String} result.qrcode.userId ID of the user
+ * @apiSuccess {String} result.qrcode.number Number of the QR code
+ * @apiSuccess {String} result.qrcode.type Type of the QR code
+ * @apiSuccess {String} result.qrcode.lastUsedDate Last used date of the QR code
+ * @apiSuccess {String} result.qrcode.createdAt Creation date of the QR code
+ * @apiSuccess {String} result.qrcode.isActive Status of the QR code
+ * @apiSuccess {String} result.qrcode.nonce Nonce of the QR code(chacha20)
+ * @apiSuccess {String} result.qrcode.token Token of the QR code(chacha20)
+ * @apiSuccess {String} result.username Username of the user
  * @apiSuccessExample {json} Success-Response:
  * HTTP/1.1 200 OK
  * {

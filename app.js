@@ -16,7 +16,19 @@ var corsOptions = {
 };
 
 // use helmet to secure the app by setting various HTTP headers
-app.use(helmet());
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+                styleSrc: ["'self'", 'https:', "'unsafe-inline'"],
+                baseUri: ["'self'"],
+                fontSrc: ["'self'", 'https:', 'data:'],
+            },
+        },
+    })
+);
 app.use(cors(corsOptions));
 
 // user routers

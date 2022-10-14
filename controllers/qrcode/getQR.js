@@ -40,7 +40,10 @@ const getQrCode = async (req, res, next) => {
     // find all qr code via input and user id
     const qrCode = await QRCode.find({ ...input, userId: user._id });
 
-    res.json(qrCode);
+    res.json({
+        qrCode,
+        username: user.first_name + ' ' + user.last_name,
+    });
 };
 
 module.exports = getQrCode;

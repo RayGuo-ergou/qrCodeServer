@@ -49,7 +49,10 @@ const getQrcodeById = async (req, res, next) => {
         return next(error);
     }
 
-    res.json(qrCode);
+    res.json({
+        qrCode,
+        username: user.first_name + ' ' + user.last_name,
+    });
 };
 
 module.exports = getQrcodeById;
