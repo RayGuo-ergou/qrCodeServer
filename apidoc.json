@@ -1,0 +1,6 @@
+{
+    "name": "Qr Code API",
+    "description": "Qr Code API",
+    "version": "0.0.1",
+    "order": ["User", "QR"]
+}

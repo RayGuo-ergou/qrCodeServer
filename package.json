@@ -9,6 +9,7 @@
         "dev": "nodemon index.js",
         "lint": "eslint --fix --ext .js,.jsx .",
         "lint:check": "eslint --ext .js,.jsx .",
+        "apidoc": "apidoc -i routers/ -o apidoc/",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
@@ -32,6 +33,7 @@
         "tslib": "^2.4.0"
     },
     "devDependencies": {
+        "apidoc": "^0.53.0",
         "eslint": "^8.25.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",

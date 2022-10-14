@@ -11,3 +11,6 @@ npm-debug.log
 # test
 *.http
 testCode/
+
+# apidoc
+/apidoc

@@ -63,23 +63,13 @@ const verify = async (req, res, next) => {
             return next(error);
         }
 
-        // Update qr code
-        // TODO: update qr code in another endpoint
-        // await QRCode.findOneAndUpdate(
-        //     { _id: qrCode._id },
-        //     {
-        //         isActive: true,
-        //         lastUsedDate: new Date(),
-        //     }
-        // );
-
         // Find user
         const user = await User.findById(decryptedJson.userId);
 
         // TODO: change in the future
         return res.status(200).json({
             message: 'QR code verified',
-            user: user.first_name + ' ' + user.last_name,
+            user: user.email,
             number: qrCode.number,
         });
     } catch (err) {
