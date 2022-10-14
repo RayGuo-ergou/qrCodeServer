@@ -1,6 +1,5 @@
 const AdminJS = require('adminjs');
 const AdminJSExpress = require('@adminjs/express');
-const { adminAuth } = require('../utility');
 const session = require('express-session');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const AdminJSMongoose = require('@adminjs/mongoose');
@@ -11,6 +10,7 @@ const setQRListCustom = adminUtilities.qrListCustom;
 const setUserListCustom = adminUtilities.userListCustom;
 const setQRShowCustom = adminUtilities.qrShowCustom;
 const qrEditValidation = adminUtilities.qrEditValidation;
+const adminAuth = adminUtilities.adminAuth;
 const QRCodeFilterItems = [
     'userId',
     'number',

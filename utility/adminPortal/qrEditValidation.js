@@ -20,7 +20,7 @@ const qrEditValidation = async (request, response) => {
     if (currentQrCode && currentNumber !== newNumber) {
         throw new ValidationError(
             {
-                name: {
+                number: {
                     message: 'This QR code already exist.',
                 },
             },
@@ -35,7 +35,7 @@ const qrEditValidation = async (request, response) => {
     if (payload.type < 0 || payload.type > 2) {
         throw new ValidationError(
             {
-                name: {
+                type: {
                     message: 'QR Code Type must be 0, 1, or 2',
                 },
             },
