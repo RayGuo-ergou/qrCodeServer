@@ -8,7 +8,10 @@ const setCustom = async (response, request, context) => {
     const records = response.records || [];
     response.records = records.map((record) => {
         record.params.type = QR_TYPE[record.params.type];
-        console.log(record.params);
+        record.populated.userId.title =
+            record.populated.userId.params.first_name +
+            ' ' +
+            record.populated.userId.params.last_name;
         return record;
     });
     return response;
