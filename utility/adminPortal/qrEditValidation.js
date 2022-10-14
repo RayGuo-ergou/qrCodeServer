@@ -45,7 +45,10 @@ const qrEditValidation = async (request, response) => {
         );
     }
 
-    payload.lastUsedDate = new Date();
+    // only the isActive changed, update the lastUsedDate
+    if (payload.isActive !== response.record.params.isActive) {
+        payload.lastUsedDate = new Date();
+    }
 
     return request;
 };
