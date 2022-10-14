@@ -4,6 +4,7 @@ const QR_TYPE = {
     1: 'cut-in',
     2: 'free&cut-in',
 };
+// eslint-disable-next-line no-unused-vars
 const setCustom = async (response, request, context) => {
     const records = response.records || [];
     response.records = records.map((record) => {
@@ -12,6 +13,7 @@ const setCustom = async (response, request, context) => {
             record.populated.userId.params.first_name +
             ' ' +
             record.populated.userId.params.last_name;
+
         return record;
     });
     return response;

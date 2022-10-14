@@ -3,6 +3,7 @@ const USER_TYPE = {
     0: 'root',
     1: 'normal',
 };
+// eslint-disable-next-line no-unused-vars
 const setCustom = async (response, request, context) => {
     const records = response.records || [];
     response.records = records.map((record) => {
