@@ -25,7 +25,7 @@ const changeQR = async (req, res, next) => {
 
     // check email and change are not empty
     if (!email || !number) {
-        let error = new Error('Email or change is empty');
+        let error = new Error('All input is required');
         error.status = 400;
         return next(error);
     }
