@@ -29,7 +29,11 @@ const login = async (req, res, next) => {
             );
 
             // user
-            return res.status(200).json({ token });
+            return res.status(200).json({
+                token,
+                username: user.first_name + ' ' + user.last_name,
+                email: user.email,
+            });
         }
         let error = new Error('Invalid credentials');
         error.status = 400;
