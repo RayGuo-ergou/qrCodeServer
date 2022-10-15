@@ -11,13 +11,11 @@ const { login, register } = require('../controllers/auth');
  * @apiDescription Login to the application and get a token
  * @apiQuery {String} email Email of the user
  * @apiQuery {String} password Password of the user
- * @apiSuccess {String} token Token of the user
  * @apiSuccess {String} username Username of the user
  * @apiSuccess {String} email Email of the user
  * @apiSuccessExample {json} Success-Response:
  * HTTP/1.1 200 OK
  * {
- *  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30",
  *  "username": "Test User",
  *  "email": "test@test.com"
  * }
@@ -73,11 +71,13 @@ router.get('/', login);
  * }
  *
  *
- * @apiSuccess {String} Token JWT token.
+ * @apiSuccess {String} status If the request success.
+ * @apiSuccess {String} message message about the request.
  * @apiSuccessExample {json} Success-Response:
  * HTTP/1.1 200 OK
  * {
- *  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30"
+ *  "status": success,
+ *  "message": 'User created successfully',
  * }
  * @apiExample {curl} Example usage:
  * curl -X POST \

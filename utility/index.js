@@ -13,4 +13,5 @@ module.exports = {
         userListCustom: require('./adminPortal/userListCustom'),
         qrEditValidation: require('./adminPortal/qrEditValidation'),
     },
+    authCheck: require('./authCheck'),
 };

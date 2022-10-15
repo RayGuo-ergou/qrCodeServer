@@ -3,16 +3,19 @@ require('./config/database');
 const routers = require('./routers');
 const express = require('express');
 const error = require('./middlewares/error');
+const cookieParser = require('cookie-parser');
 const app = express();
 const { admin, router } = routers.admin;
 const helmet = require('helmet');
 const cors = require('cors');
 
 app.use(express.json());
+app.use(cookieParser());
 
 var corsOptions = {
     origin: process.env.FRONTEND_URL,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    credentials: true,
 };
 
 // use helmet to secure the app by setting various HTTP headers

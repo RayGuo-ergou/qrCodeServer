@@ -1,25 +1,17 @@
 const User = require('../../model/user');
 const QRCode = require('../../model/qrCode');
-const jwt = require('jsonwebtoken');
+const utility = require('../../utility');
+const authCheck = utility.authCheck;
 
 const changeQR = async (req, res, next) => {
-    //check if user is logged in use jwt
-    if (!req.headers.authorization) {
-        let error = new Error('You are not authorized to access this resource');
-        error.status = 401;
-        return next(error);
+    // TODO: this can be done as a middleware
+    // e.g. app.post('/protectedroute', checkToken, routename.functionname)
+    // check in future if have time
+    const auth = authCheck(req);
+    if (auth) {
+        return next(auth);
     }
 
-    // decode the jwt and see if it valid
-    if (req.headers.authorization) {
-        const token = req.headers.authorization.split(' ')[1];
-        try {
-            jwt.verify(token, process.env.TOKEN_KEY);
-        } catch (err) {
-            err.status = 400;
-            return next(err);
-        }
-    }
     const number = req.params.id;
     const { email } = req.body;
 

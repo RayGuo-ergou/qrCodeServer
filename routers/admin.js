@@ -103,7 +103,8 @@ const router = () => {
             saveUninitialized: true,
             secret: 'sessionsecret',
             cookie: {
-                httpOnly: process.env.NODE_ENV === 'production',
+                // httpOnly: process.env.NODE_ENV === 'production',
+                httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
             },
             name: 'adminjs',
