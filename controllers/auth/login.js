@@ -33,6 +33,7 @@ const login = async (req, res, next) => {
                 .cookie('token', token, {
                     httpOnly: true,
                     secure: true,
+                    sameSite: 'none',
                 })
                 .json({
                     username: user.first_name + ' ' + user.last_name,
