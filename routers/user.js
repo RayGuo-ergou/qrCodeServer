@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { login, register } = require('../controllers/auth');
+const { login, register, getUser } = require('../controllers/auth');
 
 /**
- * @api {get} /api/user Login
+ * @api {get} /api/user/login Login
  * @apiName Login
  * @apiGroup User
  * @apiVersion 0.0.1
@@ -35,10 +35,36 @@ const { login, register } = require('../controllers/auth');
  *  "status": 400
  * }
  * @apiExample {curl} Example usage:
- * curl -i http://example.com/api/user?email=test%40test.com&password=123456
- * @apiSampleRequest /api/user
+ * curl -i http://example.com/api/user/login?email=test%40test.com&password=123456
+ * @apiSampleRequest /api/user/login
  */
-router.get('/', login);
+router.get('/login', login);
+
+/**
+ * @api {get} /api/user Get User
+ * @apiName GetUser
+ * @apiGroup User
+ * @apiVersion 0.0.1
+ * @apiDescription Check if the user is logged in
+ * @apiSuccess {String} Message Message
+ * @apiSuccessExample {json} Success-Response:
+ * HTTP/1.1 200 OK
+ * {
+ *  "message": "User found"
+ * }
+ * @apiError (401) Unauthorized The user is not logged in
+ * @apiErrorExample {json} Unauthorized
+ * HTTP/1.1 401 Unauthorized
+ * {
+ *  "message": "You are not authorized to access this resource",
+ *  "status": 401
+ * }
+ * @apiExample {curl} Example usage:
+ * curl -i http://example.com/api/user
+ * @apiSampleRequest /api/user
+ *
+ */
+router.get('/', getUser);
 
 /**
  * @api {post} /api/user Register a new user
