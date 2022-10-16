@@ -9,7 +9,7 @@ const getUser = async (req, res, next) => {
     if (auth) {
         return next(auth);
     }
-    return res.status(302).json({ message: 'User found' });
+    return res.status(202).json({ message: 'User found' });
 };
 
 module.exports = getUser;

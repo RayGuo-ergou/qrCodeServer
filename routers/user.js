@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { login, register, getUser } = require('../controllers/auth');
+const { login, register, getUser, logout } = require('../controllers/auth');
 
 /**
  * @api {get} /api/user/login Login
@@ -39,6 +39,8 @@ const { login, register, getUser } = require('../controllers/auth');
  * @apiSampleRequest /api/user/login
  */
 router.get('/login', login);
+
+router.get('/logout', logout);
 
 /**
  * @api {get} /api/user Get User
