@@ -19,7 +19,8 @@ const generate = async (req, res, next) => {
         const { email, type } = req.body;
 
         // Validate user input
-        if (!email || !type) {
+        // if email or type is null or undefined
+        if (email == null || type == null) {
             let error = new Error('All input is required');
             error.status = 400;
             return next(error);

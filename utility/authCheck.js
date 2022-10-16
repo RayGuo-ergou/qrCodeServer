@@ -12,7 +12,7 @@ const authCheck = (req) => {
         try {
             jwt.verify(token, process.env.TOKEN_KEY);
         } catch (err) {
-            err.status = 400;
+            err.status = 406;
             return err;
         }
     }

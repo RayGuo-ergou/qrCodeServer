@@ -7,7 +7,10 @@ const logout = (req, res) => {
             sameSite: 'none',
             secure: true,
         })
+        .clearCookie('token')
         .json({ message: 'Logout successful' });
+    // remove cookie from browser
+    // res.clearCookie('token').json({ message: 'Logout successful' });
 };
 
 module.exports = logout;

@@ -34,6 +34,8 @@ const login = async (req, res, next) => {
                     httpOnly: true,
                     secure: true,
                     sameSite: 'none',
+                    //time 100 mins
+                    maxAge: 100 * 60 * 1000,
                 })
                 .json({
                     username: user.first_name + ' ' + user.last_name,
