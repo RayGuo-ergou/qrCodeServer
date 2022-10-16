@@ -15,11 +15,6 @@ const {
  * @apiGroup QR
  * @apiVersion 0.0.1
  * @apiDescription Find QR code(s) by email
- * @apiHeader (auth) {String} authorization The JWT token.
- * @apiHeaderExample {json} Header-Example:
- * {
- *   "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30"
- * }
  * @apiQuery {String} email Email of the user
  * @apiSuccess {Object} result qrcode array and username
  * @apiSuccess {Object[]} result.qrcodes List of QR codes
@@ -48,8 +43,7 @@ const {
  *  "status": 400
  * }
  * @apiExample {curl} Example usage:
- * curl -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30" \
- * -i http://localhost/api/qr?email=test%40test.com
+ * curl -i http://localhost/api/qr?email=test%40test.com
  * @apiSuccessExample {json} Success-Response:
  * HTTP/1.1 200 OK
  * [
@@ -75,11 +69,6 @@ router.get('/', getQR);
  * @apiGroup QR
  * @apiVersion 0.0.1
  * @apiDescription Generate QR code
- * @apiHeader (auth) {String} authorization The JWT token.
- * @apiHeaderExample {json} Header-Example:
- * {
- *  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30"
- * }
  * @apiBody {Number} type Type of the QR code
  * @apiBody {String} email Email of the user
  * @apiSuccess {String} imageData Image data of the QR code(base64)
@@ -109,7 +98,6 @@ router.get('/', getQR);
  * }
  * @apiExample {curl} Example usage:
  * curl -X POST -H "Content-Type: application/json" \
- * -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30" \
  * -d '{"type":1, "email":"test@test.com"}' http://example.com/api/qr
  * @apiSampleRequest /api/qr
  */
@@ -121,11 +109,6 @@ router.post('/', generate);
  * @apiGroup QR
  * @apiVersion 0.0.1
  * @apiDescription Get a QR code
- * @apiHeader (auth) {String} authorization The JWT token.
- * @apiHeaderExample {json} Header-Example:
- * {
- *  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30"
- * }
  * @apiParam {String} id Number of the QR code
  * @apiQuery {String} email Email of the user
  * @apiSuccess {Object} result result include the QR code and username
@@ -171,7 +154,6 @@ router.post('/', generate);
  * }
  * @apiExample {curl} Example usage:
  * curl -X GET -H "Content-Type: application/json" \
- * -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30" \
  * http://example.com/api/qr/1?email=test@te.com
  * @apiSampleRequest /api/qr/:id
  *
@@ -184,11 +166,6 @@ router.get('/:id', getQRcodeById);
  * @apiGroup QR
  * @apiVersion 0.0.1
  * @apiDescription Update a QR code
- * @apiHeader (auth) {String} authorization The JWT token.
- * @apiHeaderExample {json} Header-Example:
- * {
- *  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30"
- * }
  * @apiParam {String} id Number of the QR code
  * @apiBody {String} email Email of the user
  * @apiSuccess {Object} info information of the QR code after update
@@ -220,7 +197,6 @@ router.get('/:id', getQRcodeById);
  * }
  * @apiExample {curl} Example usage:
  * curl -X PATCH -H "Content-Type: application/json" \
- * -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30" \
  * -d '{"email": "test@test.com"}' \
  * http://example.com/api/qr/1
  * @apiSampleRequest /api/qr/:id
@@ -234,11 +210,6 @@ router.patch('/:id', changeQR);
  * @apiGroup QR
  * @apiVersion 0.0.1
  * @apiDescription verify a QR code
- * @apiHeader (auth) {String} authorization The JWT token.
- * @apiHeaderExample {json} Header-Example:
- * {
- *  "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30"
- * }
  * @apiBody {String} token Token of the QR code
  * @apiSuccess {Object} info information of the QR code after update
  * @apiSuccess {String} info.message 'QR Code changed successfully'
@@ -271,7 +242,6 @@ router.patch('/:id', changeQR);
  * }
  * @apiExample {curl} Example usage:
  * curl -X POST -H "Content-Type: application/json" \
- * -H "authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjM0N2ZiMmY0YjY2ZjIzZTE2NWMxZmZlIiwiZW1haWwiOiJ0ZXN0QHQxZTExMTFzdC5jb20iLCJpYXQiOjE2NjU2Njc5MTYsImV4cCI6MTY2NTY3NTExNn0.b65ovmJFbMbXoJuePPd_Di8GUpH_6TnXqkFQR3VJs30" \
  * -d '{"token": "1"}' \
  * http://example.com/api/qr/scan
  * @apiSampleRequest /api/qr/scan
