@@ -24,7 +24,7 @@ const login = async (req, res, next) => {
                 { user_id: user._id, email },
                 process.env.TOKEN_KEY,
                 {
-                    expiresIn: '2h',
+                    expiresIn: '10h',
                 }
             );
 
@@ -34,8 +34,8 @@ const login = async (req, res, next) => {
                     httpOnly: true,
                     secure: true,
                     sameSite: 'none',
-                    //time 100 mins
-                    maxAge: 100 * 60 * 1000,
+                    // time 10h
+                    maxAge: 10 * 60 * 60 * 1000,
                 })
                 .json({
                     username: user.first_name + ' ' + user.last_name,

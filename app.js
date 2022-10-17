@@ -28,6 +28,7 @@ app.use(
                 styleSrc: ["'self'", 'https:', "'unsafe-inline'"],
                 baseUri: ["'self'"],
                 fontSrc: ["'self'", 'https:', 'data:'],
+                imgSrc: ["'self'", 'data:', 'blob:'],
             },
         },
     })
