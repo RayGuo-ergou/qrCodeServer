@@ -61,6 +61,8 @@ const verify = async (req, res, next) => {
             message: 'QR code verified',
             user: user.email,
             number: qrCode.number,
+            type: qrCode.type,
+            isActive: qrCode.isActive,
         });
     } catch (err) {
         return next(err);

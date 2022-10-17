@@ -224,13 +224,17 @@ router.patch('/:id', changeQR);
  * @apiSuccess {String} info.message 'QR Code changed successfully'
  * @apiSuccess {String} info.user Email of the user
  * @apiSuccess {Number} info.number Number of the QR code
+ * @apiSuccess {Number} info.type Type of the QR code
+ * @apiSuccess {Boolean} info.isActive Status of the QR code
  *
  * @apiSuccessExample {json} Success-Response:
  * HTTP/1.1 200 OK
  * {
  *  "message": "QR Code changed successfully",
  *  "user": "test@test.com",
- *  "number": 1
+ *  "number": 1,
+ *  "type": 1,
+ *  "isActive": true
  * }
  * @apiError (401: Unauthorized) {String} Unauthorized message You are not authorized to access this resource
  * @apiError (400: Bad Request) {String} MissingToken Token is required
