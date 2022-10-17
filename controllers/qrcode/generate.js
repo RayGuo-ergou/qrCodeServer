@@ -80,7 +80,12 @@ const generate = async (req, res, next) => {
                 await QRCode.create(qrData);
 
                 // Return qr code
-                return res.status(200).json({ dataImage });
+                return res.status(200).json({
+                    dataImage,
+                    type,
+                    number: index,
+                    username: user.first_name + ' ' + user.last_name,
+                });
             });
     } catch (err) {
         return next(err);

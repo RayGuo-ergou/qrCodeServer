@@ -1,6 +1,5 @@
 const User = require('../../model/user');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const adminKey = process.env.ADMIN_KEY;
 const register = async (req, res, next) => {
@@ -50,22 +49,13 @@ const register = async (req, res, next) => {
         let encryptedPassword = await bcrypt.hash(password, 10);
 
         // Create user in our database
-        const user = await User.create({
+        await User.create({
             first_name,
             last_name,
             email: email.toLowerCase(), // sanitize: convert email to lowercase
             password: encryptedPassword,
             role,
         });
-
-        // Create token
-        const token = jwt.sign(
-            { user_id: user._id, email },
-            process.env.TOKEN_KEY,
-            {
-                expiresIn: '2h',
-            }
-        );
 
         // return new user
         res.status(201).json({
