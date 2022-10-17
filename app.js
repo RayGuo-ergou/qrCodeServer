@@ -34,6 +34,17 @@ app.use(
 );
 app.use(cors(corsOptions));
 
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html');
+});
+
+// for history mode
+app.use('/login', express.static(__dirname + '/public/index.html'));
+app.use('/generate', express.static(__dirname + '/public/index.html'));
+app.use('/scan', express.static(__dirname + '/public/index.html'));
+
 // user routers
 app.use('/api/user', routers.user);
 

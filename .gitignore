@@ -15,3 +15,6 @@ testCode/
 
 # apidoc
 /apidoc
+
+# build
+/public

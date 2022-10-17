@@ -226,6 +226,8 @@ router.patch('/:id', changeQR);
  * @apiSuccess {Number} info.number Number of the QR code
  * @apiSuccess {Number} info.type Type of the QR code
  * @apiSuccess {Boolean} info.isActive Status of the QR code
+ * @apiSuccess {String} info.username Username of the user
+ * @apiSuccess {String} info.email Email of the user
  *
  * @apiSuccessExample {json} Success-Response:
  * HTTP/1.1 200 OK
