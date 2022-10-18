@@ -29,8 +29,8 @@ const admin = new AdminJS({
                 qrcodes: {
                     properties: {
                         // this will override the name only for Comment resource.
-                        //type: 'QR Code Type: 0 = free, 1 = cut-in, 2 = free and cut-in',
-                        type: 'QR Code Type: 0 = free, 1 = cut-in, 2 = free and cut-in',
+                        //type: 'QR Code Type: 0 = free, 1 = cut-in, 2 = free and cut-in, 3 = free and cut-in(no limit)',
+                        type: 'QR Code Type: 0 = free, 1 = cut-in, 2 = free and cut-in, 3 = free and cut-in (no limit)',
                     },
                 },
             },

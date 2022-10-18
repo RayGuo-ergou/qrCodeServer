@@ -32,15 +32,15 @@ const qrEditValidation = async (request, response) => {
 
     // if payload.type less than 0 or greater than 2
     // throw error
-    if (payload.type < 0 || payload.type > 2) {
+    if (payload.type < 0 || payload.type > 3) {
         throw new ValidationError(
             {
                 type: {
-                    message: 'QR Code Type must be 0, 1, or 2',
+                    message: 'QR Code Type must be 0, 1, 2, or 3.',
                 },
             },
             {
-                message: 'QR Code Type must be 0, 1, or 2',
+                message: 'QR Code Type must be 0, 1, 2, or 3.',
             }
         );
     }

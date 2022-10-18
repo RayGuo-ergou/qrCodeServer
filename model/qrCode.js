@@ -31,7 +31,7 @@ const qrCodeSchema = new mongoose.Schema({
 
 // pre check type in range 0 to 2
 qrCodeSchema.pre('save', function (next) {
-    if (this.type < 0 || this.type > 2) {
+    if (this.type < 0 || this.type > 3) {
         // set to 0
         this.type = 0;
     }

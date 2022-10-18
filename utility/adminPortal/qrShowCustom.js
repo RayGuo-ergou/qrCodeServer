@@ -4,6 +4,7 @@ const QR_TYPE = {
     0: 'free',
     1: 'cut-in',
     2: 'free&cut-in',
+    3: 'free&cut-in(no limit)',
 };
 
 const qrShowCustom = async (request, response, data) => {

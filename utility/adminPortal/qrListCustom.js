@@ -3,6 +3,7 @@ const QR_TYPE = {
     0: 'free',
     1: 'cut-in',
     2: 'free&cut-in',
+    3: 'free&cut-in(no limit)',
 };
 // eslint-disable-next-line no-unused-vars
 const setCustom = async (response, request, context) => {
