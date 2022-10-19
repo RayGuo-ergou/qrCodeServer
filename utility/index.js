@@ -14,4 +14,7 @@ module.exports = {
         qrEditValidation: require('./adminPortal/qrEditValidation'),
     },
     authCheck: require('./authCheck'),
+    qrCode: {
+        qrCodeWithIcon: require('./qrcode/qrCodeWithIcon'),
+    },
 };

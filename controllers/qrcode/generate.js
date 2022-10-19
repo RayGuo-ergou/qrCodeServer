@@ -1,10 +1,11 @@
 const User = require('../../model/user');
-const QR = require('qrcode');
 const QRCode = require('../../model/qrCode');
 const utility = require('../../utility');
 const encrypt = utility.cipher.encrypt;
 const getRandom = utility.random;
 const authCheck = utility.authCheck;
+const qrCodeWithIcon = utility.qrCode.qrCodeWithIcon;
+const icon = require('../../model/img/plusIcon.js');
 
 const generate = async (req, res, next) => {
     // TODO: this can be done as a middleware
@@ -64,7 +65,12 @@ const generate = async (req, res, next) => {
                     process.env.CIPHER_KEY
                 );
 
-                const dataImage = await QR.toDataURL(encryptedData);
+                const dataImage = await qrCodeWithIcon(
+                    encryptedData,
+                    icon,
+                    220,
+                    40
+                );
 
                 // create data to save to database
                 const qrData = {
