@@ -17,4 +17,7 @@ testCode/
 /apidoc
 
 # build
-/public
+public
+
+
+dist/

@@ -1,6 +1,7 @@
-const app = require('./app');
+import app from './app';
+import results from './config/localIPaddr';
+
 const { API_PORT } = process.env;
-const results = require('./config/localIPaddr');
 const port = process.env.PORT || API_PORT;
 // server listening
 app.listen(port, () => {

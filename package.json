@@ -5,8 +5,9 @@
     "main": "index.js",
     "author": "Ray Guo <rayguo.rf@gmail.com>",
     "scripts": {
-        "start": "node index.js",
-        "dev": "nodemon index.js",
+        "start": "node ./dist/index.js",
+        "dev": "nodemon ./dist/index.js",
+        "build": "tsc",
         "lint": "eslint --fix --ext .js,.jsx .",
         "lint:check": "eslint --ext .js,.jsx .",
         "apidoc": "apidoc -i routers/ -o apidoc/",
@@ -35,11 +36,16 @@
         "tslib": "^2.4.0"
     },
     "devDependencies": {
+        "@types/express": "^4.17.14",
+        "@types/express-handlebars": "^6.0.0",
+        "@types/node": "^18.11.3",
         "apidoc": "^0.53.0",
         "eslint": "^8.25.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
         "nodemon": "^2.0.20",
-        "prettier": "^2.7.1"
+        "prettier": "^2.7.1",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.8.4"
     }
 }
