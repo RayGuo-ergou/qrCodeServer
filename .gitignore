@@ -14,7 +14,7 @@ npm-debug.log
 testCode/
 
 # apidoc
-/apidoc
+apidoc/
 
 # build
 public

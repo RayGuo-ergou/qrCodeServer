@@ -10,7 +10,7 @@
         "build": "tsc",
         "lint": "eslint --fix --ext .js,.jsx .",
         "lint:check": "eslint --ext .js,.jsx .",
-        "apidoc": "apidoc -i routers/ -o apidoc/",
+        "apidoc": "apidoc -i ./src/routers/ -o ./src/apidoc/",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
