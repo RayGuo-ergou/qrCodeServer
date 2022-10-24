@@ -1,11 +1,14 @@
-const AdminJS = require('adminjs');
-const AdminJSExpress = require('@adminjs/express');
-const session = require('express-session');
-const MongoDBStore = require('connect-mongodb-session')(session);
-const AdminJSMongoose = require('@adminjs/mongoose');
-const QRCode = require('../model/qrCode');
-const User = require('../model/user');
-const adminUtilities = require('../utility').adminPortal;
+import AdminJS from 'adminjs';
+import AdminJSExpress from '@adminjs/express';
+import session from 'express-session';
+import connectMongo, { MongoDBSessionOptions } from 'connect-mongodb-session';
+import AdminJSMongoose from '@adminjs/mongoose';
+import QRCode from '../model/qrCode';
+import User from '../model/user';
+import Utilities from '../utility';
+
+const MongoDBStore = connectMongo(session);
+const adminUtilities = Utilities.adminPortal;
 const setQRListCustom = adminUtilities.qrListCustom;
 const setUserListCustom = adminUtilities.userListCustom;
 const setQRShowCustom = adminUtilities.qrShowCustom;
@@ -24,6 +27,7 @@ const userFilterItems = ['first_name', 'last_name', 'email', 'role'];
 AdminJS.registerAdapter(AdminJSMongoose);
 const admin = new AdminJS({
     locale: {
+        language: 'en',
         translations: {
             resources: {
                 qrcodes: {
@@ -86,7 +90,7 @@ const admin = new AdminJS({
 const store = new MongoDBStore({
     uri: process.env.MONGO_URI,
     collection: 'sessions',
-});
+} as MongoDBSessionOptions);
 
 const router = () => {
     const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
@@ -94,14 +98,14 @@ const router = () => {
         {
             authenticate: adminAuth,
             cookieName: 'adminjs',
-            cookiePassword: 'sessionsecret',
+            cookiePassword: process.env.ADMIN_COOKIE_SECRET || 'sessionSecret',
         },
         null,
         {
             store: store,
             resave: true,
             saveUninitialized: true,
-            secret: 'sessionsecret',
+            secret: process.env.ADMIN_SESSION_COOKIE_SECRET || 'sessionSecret',
             cookie: {
                 // httpOnly: process.env.NODE_ENV === 'production',
                 httpOnly: true,
@@ -113,7 +117,4 @@ const router = () => {
     return adminRouter;
 };
 
-module.exports = {
-    admin,
-    router,
-};
+export default { router, admin };

@@ -1,18 +1,21 @@
-require('dotenv').config();
-require('./config/database');
-const routers = require('./routers');
-const express = require('express');
-const error = require('./middlewares/error');
-const cookieParser = require('cookie-parser');
-const app = express();
+import dotenv from 'dotenv';
+dotenv.config();
+
+import './config/database';
+import routers from './routers';
+import express, { Express, Request, Response } from 'express';
+import cors from 'cors';
+import error from './middleware/error';
+import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
+
+const app: Express = express();
 const { admin, router } = routers.admin;
-const helmet = require('helmet');
-const cors = require('cors');
 
 app.use(express.json());
 app.use(cookieParser());
 
-var corsOptions = {
+const corsOptions = {
     origin: process.env.FRONTEND_URL,
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     credentials: true,
@@ -37,7 +40,7 @@ app.use(cors(corsOptions));
 
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
@@ -58,4 +61,5 @@ app.use(admin.options.rootPath, router());
 // Error handler middleware
 // This must be placed after routes
 app.use(error);
-module.exports = app;
+
+export default app;
