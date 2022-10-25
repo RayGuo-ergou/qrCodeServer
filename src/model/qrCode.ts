@@ -1,7 +1,18 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
+import mongoose, { Schema, Document, Types } from 'mongoose';
 
-const qrCodeSchema = new mongoose.Schema({
+export interface IQRCode extends Document {
+    userId: Types.ObjectId;
+    image: string;
+    number: number;
+    type: number;
+    lastUsedDate: Date;
+    isActive: boolean;
+    nonce: string;
+    token: string;
+    createdDate: Date;
+}
+
+const qrCodeSchema: Schema = new mongoose.Schema({
     userId: {
         type: Schema.Types.ObjectId,
         required: true,
@@ -38,4 +49,4 @@ qrCodeSchema.pre('save', function (next) {
     next();
 });
 
-module.exports = mongoose.model('qrCode', qrCodeSchema);
+export default mongoose.model<IQRCode>('qrCode', qrCodeSchema);

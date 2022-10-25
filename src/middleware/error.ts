@@ -1,4 +1,6 @@
-const chalk = require('chalk');
+import { Request, Response, NextFunction } from 'express';
+import HttpError from '../classes/httpError';
+import chalk from 'chalk';
 
 // define chalk colors
 const chalkTheme = {
@@ -9,8 +11,13 @@ const chalkTheme = {
 // keep the next parameter
 // it works differently without it
 // ignore eslint error
-// eslint-disable-next-line no-unused-vars
-const errorMiddleware = (error, req, res, next) => {
+const errorMiddleware = (
+    error: HttpError,
+    req: Request,
+    res: Response,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    next: NextFunction
+) => {
     console.log(chalkTheme.error('Error Handling Middleware called'));
     console.log(chalkTheme.errorTitle('Path: '), chalkTheme.error(req.path));
     console.log(
@@ -27,4 +34,4 @@ const errorMiddleware = (error, req, res, next) => {
     });
 };
 
-module.exports = errorMiddleware;
+export default errorMiddleware;
