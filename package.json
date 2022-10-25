@@ -37,6 +37,7 @@
         "tslib": "^2.4.0"
     },
     "devDependencies": {
+        "@types/bcryptjs": "^2.4.2",
         "@types/connect-mongodb-session": "^2.4.4",
         "@types/cookie-parser": "^1.4.3",
         "@types/cors": "^2.8.12",

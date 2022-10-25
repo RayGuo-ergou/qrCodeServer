@@ -47,4 +47,4 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-module.exports = getUser;
+export default getUser;

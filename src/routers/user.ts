@@ -1,7 +1,7 @@
-const express = require('express');
+import express, { RequestHandler } from 'express';
 const router = express.Router();
-
-const { login, register, getUser, logout } = require('../controllers/auth');
+import authController from '../controllers/auth';
+const { login, register, getUser, logout } = authController;
 
 /**
  * @api {get} /api/user/login Login
@@ -38,9 +38,9 @@ const { login, register, getUser, logout } = require('../controllers/auth');
  * curl -i http://example.com/api/user/login?email=test%40test.com&password=123456
  * @apiSampleRequest /api/user/login
  */
-router.get('/login', login);
+router.get('/login', login as RequestHandler);
 
-router.get('/logout', logout);
+router.get('/logout', logout as RequestHandler);
 
 /**
  * @api {get} /api/user Get User
@@ -66,7 +66,7 @@ router.get('/logout', logout);
  * @apiSampleRequest /api/user
  *
  */
-router.get('/', getUser);
+router.get('/', getUser as RequestHandler);
 
 /**
  * @api {post} /api/user Register a new user
@@ -121,6 +121,6 @@ router.get('/', getUser);
  * @apiSampleRequest /api/user
  * @apiVersion 0.0.1
  */
-router.post('/', register);
+router.post('/', register as RequestHandler);
 
-module.exports = router;
+export default router;
