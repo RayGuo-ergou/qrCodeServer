@@ -4,7 +4,6 @@ import utility from '../../utility';
 import { Request, Response, NextFunction } from 'express';
 import VerifyQRBody from '../../types/verifyQRBody';
 import HttpError from '../../classes/httpError';
-import { IUser } from '../../model/user';
 
 const decrypt = utility.cipher.decrypt;
 const authCheck = utility.authCheck;
