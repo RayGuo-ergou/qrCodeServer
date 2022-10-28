@@ -1,8 +1,11 @@
-const User = require('../../model/user');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import User from '../../model/user';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
+import HttpError from '../../classes/httpError';
+import { IUser } from '../../model/user';
 
-const login = async (req, res, next) => {
+const login = async (req: Request, res: Response, next: NextFunction) => {
     // Our login logic starts here
     try {
         // Get user input
@@ -10,19 +13,18 @@ const login = async (req, res, next) => {
 
         // Validate user input
         if (!(email && password)) {
-            let error = new Error('All input is required');
-            error.status = 400;
+            const error = new HttpError('All input is required', 400);
             return next(error);
         }
 
         // Validate if user exist in our database
-        const user = await User.findOne({ email });
+        const user: IUser | null = await User.findOne({ email });
 
-        if (user && (await bcrypt.compare(password, user.password))) {
+        if (user && (await bcrypt.compare(password as string, user.password))) {
             // Create token
             const token = jwt.sign(
-                { user_id: user._id, email },
-                process.env.TOKEN_KEY,
+                { user_id: user._id as string, email },
+                process.env.TOKEN_KEY as jwt.Secret,
                 {
                     expiresIn: '10h',
                 }
@@ -42,8 +44,8 @@ const login = async (req, res, next) => {
                     email: user.email,
                 });
         }
-        let error = new Error('Invalid credentials');
-        error.status = 400;
+        const error = new HttpError('Invalid credentials', 400);
+
         return next(error);
     } catch (err) {
         return next(err);
@@ -51,5 +53,4 @@ const login = async (req, res, next) => {
     // Our login logic ends here
 };
 
-// export default login;
-module.exports = login;
+export default login;

@@ -1,4 +1,6 @@
-const logout = (req, res) => {
+import { Request, Response } from 'express';
+
+const logout = (req: Request, res: Response) => {
     res.status(200)
         .clearCookie('token', {
             sameSite: 'none',
@@ -6,4 +8,5 @@ const logout = (req, res) => {
         })
         .json({ message: 'Logout successful' });
 };
-module.exports = logout;
+
+export default logout;
