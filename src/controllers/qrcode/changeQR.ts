@@ -1,9 +1,14 @@
-const User = require('../../model/user');
-const QRCode = require('../../model/qrCode');
-const utility = require('../../utility');
-const authCheck = utility.authCheck;
+import User from '../../model/user';
+import QRCode from '../../model/qrCode';
+import utility from '../../utility';
+import { Request, Response, NextFunction } from 'express';
+import HttpError from '../../classes/httpError';
+import PatchQRBody from '../../types/patchQRBody';
+import { Types } from 'mongoose';
 
-const changeQR = async (req, res, next) => {
+const { authCheck } = utility;
+
+const changeQR = async (req: Request, res: Response, next: NextFunction) => {
     // TODO: this can be done as a middleware
     // e.g. app.post('/protectedroute', checkToken, routename.functionname)
     // check in future if have time
@@ -13,12 +18,11 @@ const changeQR = async (req, res, next) => {
     }
 
     const number = req.params.id;
-    const { email } = req.body;
+    const { email } = req.body as PatchQRBody;
 
     // check email and change are not empty
     if (!email || !number) {
-        let error = new Error('All input is required');
-        error.status = 400;
+        const error = new HttpError('All input is required', 400);
         return next(error);
     }
 
@@ -28,25 +32,25 @@ const changeQR = async (req, res, next) => {
 
     // if no user found, return error
     if (!user) {
-        let error = new Error('User does not exist');
-        error.status = 404;
+        const error = new HttpError('User not found', 404);
         return next(error);
     }
 
     // find the qrcode with the user id and number
-    const qrCode = await QRCode.findOne({ userId: user._id, number: number });
+    const qrCode = await QRCode.findOne({
+        userId: user._id as Types.ObjectId,
+        number: number,
+    });
 
     // if no qrcode found, return error
     if (!qrCode) {
-        let error = new Error('QR Code does not exist');
-        error.status = 404;
+        const error = new HttpError('QR Code not found', 404);
         return next(error);
     }
 
     // if qrcode is already inactive, return error
     if (!qrCode.isActive) {
-        let error = new Error('QR Code is already inactive');
-        error.status = 400;
+        const error = new HttpError('QR Code already inactive', 400);
         return next(error);
     }
 
@@ -54,7 +58,7 @@ const changeQR = async (req, res, next) => {
     qrCode.isActive = false;
 
     // change lastUsedDate to now
-    qrCode.lastUsedDate = Date.now();
+    qrCode.lastUsedDate = new Date(Date.now());
 
     // save the qrcode
     await qrCode.save();
@@ -67,4 +71,4 @@ const changeQR = async (req, res, next) => {
     });
 };
 
-module.exports = changeQR;
+export default changeQR;

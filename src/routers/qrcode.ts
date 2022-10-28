@@ -1,13 +1,9 @@
-const express = require('express');
+import express, { RequestHandler } from 'express';
+import qrcodeController from '../controllers/qrcode';
+
 const router = express.Router();
 
-const {
-    generate,
-    verify,
-    getQRcodeById,
-    getQR,
-    changeQR,
-} = require('../controllers/qrcode');
+const { generate, verify, getQRcodeById, getQR, changeQR } = qrcodeController;
 
 /**
  * @api {get} /api/qr Find QR code(s)
@@ -61,7 +57,7 @@ const {
  * ]
  * @apiSampleRequest /api/qr
  */
-router.get('/', getQR);
+router.get('/', getQR as RequestHandler);
 
 /**
  * @api {post} /api/qr Generate QR code
@@ -110,7 +106,7 @@ router.get('/', getQR);
  * -d '{"type":1, "email":"test@test.com"}' http://example.com/api/qr
  * @apiSampleRequest /api/qr
  */
-router.post('/', generate);
+router.post('/', generate as RequestHandler);
 
 /**
  * @api {get} /api/qr/:id Get a QR code
@@ -167,7 +163,7 @@ router.post('/', generate);
  * @apiSampleRequest /api/qr/:id
  *
  */
-router.get('/:id', getQRcodeById);
+router.get('/:id', getQRcodeById as RequestHandler);
 
 /**
  * @api {patch} /api/qr/:id Update a QR code
@@ -211,7 +207,7 @@ router.get('/:id', getQRcodeById);
  * @apiSampleRequest /api/qr/:id
  *
  */
-router.patch('/:id', changeQR);
+router.patch('/:id', changeQR as RequestHandler);
 
 /**
  * @api {post} /api/qr/scan verify a QR code
@@ -261,6 +257,6 @@ router.patch('/:id', changeQR);
  * http://example.com/api/qr/scan
  * @apiSampleRequest /api/qr/scan
  */
-router.post('/scan', verify);
+router.post('/scan', verify as RequestHandler);
 
-module.exports = router;
+export default router;
