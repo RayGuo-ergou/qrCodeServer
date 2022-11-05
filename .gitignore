@@ -8,6 +8,8 @@ npm-debug.log
 # env
 *.env
 .env*
+#except .env.example
+!.env.example
 
 # test
 *.http
