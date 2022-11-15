@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
 import VerifyQRBody from '../../types/verifyQRBody';
 import HttpError from '../../classes/httpError';
 
-const decrypt = utility.cipher.decrypt;
+import decrypt from '../../utility/cipher/decrypt';
 const authCheck = utility.authCheck;
 
 const verify = async (req: Request, res: Response, next: NextFunction) => {
@@ -35,8 +35,8 @@ const verify = async (req: Request, res: Response, next: NextFunction) => {
         // TODO: probably can make decrypt return a promise and use then
         try {
             const decryptedData: string = decrypt(
-                { text: token, nonce: qrData.nonce },
-                process.env.CIPHER_KEY
+                { token: token, nonce: qrData.nonce },
+                process.env.CIPHER_KEY as string
             );
             const decryptedJson: { userId: string; number: number } =
                 JSON.parse(decryptedData) as { userId: string; number: number };

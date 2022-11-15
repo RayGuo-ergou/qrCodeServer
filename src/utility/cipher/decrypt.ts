@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
 
 /**
  * Returns decrypted text
@@ -7,8 +7,8 @@ const crypto = require('crypto');
  * @param {*} key The key is 256 bits (32 bytes)
  * @returns {string} return the decrypted string
  */
-const decrypt = (data, key) => {
-    let decipher = crypto.createDecipheriv(
+const decrypt = (data: { token: string; nonce: string }, key: string) => {
+    const decipher = crypto.createDecipheriv(
         'chacha20-poly1305',
         key,
         data.nonce,
@@ -16,9 +16,8 @@ const decrypt = (data, key) => {
             authTagLength: 16,
         }
     );
-    let decrypted = decipher.update(data.text, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
+    const decrypted = decipher.update(data.token, 'hex', 'utf8');
     return decrypted;
 };
 
-module.exports = decrypt;
+export default decrypt;
