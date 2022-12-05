@@ -17,7 +17,10 @@ interface record {
 }
 
 export interface recordBase extends record {
-    params: Omit<IQRCode, 'type'> & { type: number | string };
+    params: Omit<IQRCode, 'type' | 'role'> & {
+        type: number | string;
+        role: number | string;
+    };
     populated: {
         userId: userId;
     };

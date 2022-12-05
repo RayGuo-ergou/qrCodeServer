@@ -9,6 +9,7 @@ const QR_TYPE = {
     3: 'free&cut-in(no limit)',
 };
 
+// eslint-disable-next-line @typescript-eslint/require-await
 const setCustom: After<QRListCustom> = async (response, request, context) => {
     const recordsTmp = response.records || [];
 
