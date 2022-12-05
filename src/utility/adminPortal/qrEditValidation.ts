@@ -1,9 +1,9 @@
-const { ValidationError } = require('adminjs');
-const qrcode = require('../../model/qrCode');
+import { ValidationError, Before } from 'adminjs';
+import qrcode, { IQRCode } from '../../model/qrCode';
 
-const qrEditValidation = async (request, response) => {
+const qrEditValidation: Before = async (request, response) => {
     // get the request body
-    const { payload } = request;
+    const payload = request.payload as IQRCode;
 
     // find qrcode by user id and number
     const currentQrCode = await qrcode.findOne({
@@ -12,7 +12,7 @@ const qrEditValidation = async (request, response) => {
     });
 
     // get current number and convert to number
-    const currentNumber = Number(response.record.params.number);
+    const currentNumber = Number(response.record?.params.number);
     const newNumber = Number(payload.number);
 
     // if current qrcode does exist
@@ -46,11 +46,11 @@ const qrEditValidation = async (request, response) => {
     }
 
     // only the isActive changed, update the lastUsedDate
-    if (payload.isActive !== response.record.params.isActive) {
+    if (payload.isActive !== response.record?.params.isActive) {
         payload.lastUsedDate = new Date();
     }
 
     return request;
 };
 
-module.exports = qrEditValidation;
+export default qrEditValidation;

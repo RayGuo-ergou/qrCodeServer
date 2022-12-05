@@ -1,30 +1,20 @@
 // export every file in this directory
-import decrypt from './cipher/decrypt';
-import encrypt from './cipher/encrypt';
-import random from './random';
-import adminAuth from './adminPortal/auth';
-import qrListCustom from './adminPortal/qrListCustom';
-import qrShowCustom from './adminPortal/qrShowCustom';
-import userListCustom from './adminPortal/userListCustom';
-import qrEditValidation from './adminPortal/qrEditValidation';
-import authCheck from './authCheck';
-import qrCodeWithIcon from './qrcode/qrCodeWithIcon';
 
-export default {
+module.exports = {
     cipher: {
-        decrypt,
-        encrypt,
+        decrypt: require('./cipher/decrypt'),
+        encrypt: require('./cipher/encrypt'),
     },
-    random,
+    random: require('./random'),
     adminPortal: {
-        adminAuth,
-        qrListCustom,
-        qrShowCustom,
-        userListCustom,
-        qrEditValidation,
+        adminAuth: require('./adminPortal/auth'),
+        qrListCustom: require('./adminPortal/qrListCustom'),
+        qrShowCustom: require('./adminPortal/qrShowCustom'),
+        userListCustom: require('./adminPortal/userListCustom'),
+        qrEditValidation: require('./adminPortal/qrEditValidation'),
     },
-    authCheck,
-    qrcode: {
-        qrCodeWithIcon,
+    authCheck: require('./authCheck'),
+    qrCode: {
+        qrCodeWithIcon: require('./qrcode/qrCodeWithIcon'),
     },
 };
