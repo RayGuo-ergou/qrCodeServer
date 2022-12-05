@@ -12,9 +12,9 @@ const changeQR = async (req: Request, res: Response, next: NextFunction) => {
     // TODO: this can be done as a middleware
     // e.g. app.post('/protectedroute', checkToken, routename.functionname)
     // check in future if have time
-    const auth = authCheck(req);
-    if (auth) {
-        return next(auth);
+    const authError = authCheck(req);
+    if (authError) {
+        return next(authError);
     }
 
     const number = req.params.id;
