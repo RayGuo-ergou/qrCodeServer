@@ -8,8 +8,8 @@
         "start": "node ./dist/index.js",
         "dev": "tsc-watch --onSuccess 'node ./dist/index.js'",
         "build": "tsc",
-        "lint": "eslint --fix --ext .js,.jsx .",
-        "lint:check": "eslint --ext .js,.jsx .",
+        "lint": "eslint --fix \"**/*.{ts,tsx}\"",
+        "lint:check": "eslint \"**/*.{ts,tsx}\"",
         "apidoc": "apidoc -i ./src/routers/ -o ./src/apidoc/",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
