@@ -5,11 +5,12 @@
     "main": "index.js",
     "author": "Ray Guo <rayguo.rf@gmail.com>",
     "scripts": {
-        "start": "node index.js",
-        "dev": "nodemon index.js",
-        "lint": "eslint --fix --ext .js,.jsx .",
-        "lint:check": "eslint --ext .js,.jsx .",
-        "apidoc": "apidoc -i routers/ -o apidoc/",
+        "start": "node ./dist/index.js",
+        "dev": "tsc-watch --onSuccess 'node ./dist/index.js'",
+        "build": "tsc",
+        "lint": "eslint --fix \"**/*.{ts,tsx}\"",
+        "lint:check": "eslint \"**/*.{ts,tsx}\"",
+        "apidoc": "apidoc -i ./src/routers/ -o ./src/apidoc/",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
@@ -19,7 +20,7 @@
         "@adminjs/mongoose": "^3.0.0",
         "adminjs": "^6.4.1",
         "bcryptjs": "^2.4.3",
-        "canvas": "^2.10.1",
+        "canvas": "^2.10.2",
         "chalk": "4.1.2",
         "connect-mongodb-session": "^3.1.1",
         "cookie-parser": "^1.4.6",
@@ -32,14 +33,28 @@
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^6.6.5",
         "qrcode": "^1.5.1",
+        "ts-custom-error": "^3.3.0",
         "tslib": "^2.4.0"
     },
     "devDependencies": {
+        "@types/bcryptjs": "^2.4.2",
+        "@types/connect-mongodb-session": "^2.4.4",
+        "@types/cookie-parser": "^1.4.3",
+        "@types/cors": "^2.8.12",
+        "@types/express": "^4.17.14",
+        "@types/express-handlebars": "^6.0.0",
+        "@types/jsonwebtoken": "^8.5.9",
+        "@types/node": "^18.11.3",
+        "@types/qrcode": "^1.5.0",
+        "@typescript-eslint/eslint-plugin": "^5.40.1",
+        "@typescript-eslint/parser": "^5.40.1",
         "apidoc": "^0.53.0",
-        "eslint": "^8.25.0",
+        "eslint": "^8.26.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-prettier": "^4.2.1",
-        "nodemon": "^2.0.20",
-        "prettier": "^2.7.1"
+        "prettier": "^2.7.1",
+        "ts-node": "^10.9.1",
+        "tsc-watch": "^5.0.3",
+        "typescript": "^4.8.4"
     }
 }
